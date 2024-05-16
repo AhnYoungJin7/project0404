@@ -1,0 +1,18 @@
+{% if form.errors %}
+<div class="alert alert-danger" role="alert">
+    {% for field, errors in form.errors.items() %}
+        <p>{{form[field].label}}</p>
+            <ul>
+                {% for error in errors %}
+                    <li>{{error}}</li>
+                {% endfor %}
+            </ul>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% for msg in get_flashed_messages() %}
+<div class="alert alert-danger" role="alert">
+    {{msg}}
+</div>
+{% endfor %}

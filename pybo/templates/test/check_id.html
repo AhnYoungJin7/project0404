@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="#">  
+        <input name="id">
+        <button id="checkidbtn" type="button">아이디 중복 검사</button>
+        <p id="id_result"></p>
+</form>
+
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+    $("#checkidbtn").click(function(){
+        let id = $("[name='id']").val();
+        
+        $.ajax({
+            url: "/test/checkid/"+id,
+            type: "GET",
+            dataType: "text",
+            success: function(result){
+                $("#id_result").text(result)
+            }
+        });
+    });
+});
+
+</script>
+
+{% endblock %}

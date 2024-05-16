@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h4>질문 수정 화면</h4>
+
+<form method="post" class="my-4" enctype="multipart/form-data">
+    {{form.csrf_token}}
+
+    <input type="hidden" name="file_path" value="{{form.file_path.data or ''}}">
+    <input type="hidden" name="del_img" value="1">
+
+    {% include "form_errors.html" %}
+
+    <input type="hidden" name="user_id" value="{{g.user.id}}">
+    <!-- <div class="mb-3">
+      <label for="user_id" class="form-label">작성자</label>
+      <input class="form-control" id="user_id" name="user_id" value="{{g.user.id}}">
+    </div> -->
+
+    <div class="mb-3">
+      <label for="subject" class="form-label">제목</label>
+      <input class="form-control" id="subject" name="subject" value="{{form.subject.data or ''}}">
+    </div>
+
+    <div class="mb-3">
+      <label for="file" class="form-label">첨부파일</label>
+      <input type="file"  class="form-control" id="file" name="file" value="{{form.file_path.data or ''}}">
+    </div>
+
+    <div class="mb-3">
+      <img width="30%" height="30%" src="{{form.file_path.data or ''}}" alt="첨부된 파일">
+      <button type="button" id="btn_del_attah">첨부파일 삭제</button>
+    </div>
+    
+
+    <div class="mb-3">
+      <label for="content" class="form-label">내용</label>
+      <textarea class="form-control" name="content" id="content" rows="10">{{form.content.data or ''}}</textarea>
+    </div>
+
+    
+    <button type="submit" class="btn btn-primary">수정</button>
+  </form>
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+  $("#btn_del_attah").click(function(){
+    $('[name="del_img"]').val(-1)
+    $('[alt="첨부된 파일"]').remove();
+  });
+});
+</script>
+{% endblock %}

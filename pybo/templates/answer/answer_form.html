@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<F5>답변 수정</F5>
+
+<form method="post" class="my-4">
+    {{form.csrf_token}}
+
+    {% include "form_errors.html" %}
+
+    <input type="hidden" name="user_id" value="{{g.user.id}}">
+    <!-- <div class="mb-3">
+      <label for="user_id" class="form-label">작성자</label>
+      <input class="form-control" id="user_id" name="user_id" value="{{g.user.id}}">
+    </div> -->
+
+    <div class="mb-3">
+      <label for="content" class="form-label">내용</label>
+      <textarea name="content" id="content" rows="10">{{form.content.data or ''}}</textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">수정</button>
+  </form>
+
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+
+});    
+</script>
+{% endblock %}

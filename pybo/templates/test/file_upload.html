@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<!-- file 업로그 시, form태그의 method는 post, enctype=multipart/form-data -->
+<!-- input 태그의 type은 file -->
+<form action="/test/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" id="file">
+    <button>업로드</button>
+</form>
+
+<hr>
+<form id="frm_ajax" action="/test/upload_ajax" method="post" enctype="multipart/form-data">
+    <input type="file" name="zzz"><br>
+    <input  name="id"><br>
+
+    <button id="ajax_btn" type="button">ajax업로드</button>
+</form>
+
+<img id="upload_ajax_result_img" width="20%" height="20%">
+<a href="javascript:void(0)" id="download_btn" class="btn btn_primary">다운로드</a>
+
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+$(document).ready(function(){
+    $('#ajax_btn').click(function(){
+        // let form = document.getElementById("frm_ajax");
+        let form = $("#frm_ajax")[0]
+        
+        let formData = new FormData(form);
+
+        $.ajax({
+            url: "/test/upload_ajax",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            cache: false,
+            data: formData,
+            dataType: "text",
+            success : function(result){
+                if (result != null && result != ""){
+                    $("#upload_ajax_result_img").attr("src", result);
+                    $("#upload_ajax_result_img").attr("alt", result+"의 이미지입니다.");
+                    $("download_btn").attr("href", "/test/download?filename="+result);
+                }
+                
+            }
+        });
+    });
+});  
+</script>
+
+
+{% endblock %}

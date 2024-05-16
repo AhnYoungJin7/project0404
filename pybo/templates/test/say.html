@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- jinja2 문법: test_views.py에서 보내준 데이터 ls1을 html에 적용하고 있음. -->
+
+    {% if ls1 %}
+
+        {% for name in ls1 %}
+            <p>{{name}}</p>
+        {% endfor %}
+
+    {% else %}
+        <p>데이터가 없음</p>
+    {% endif %}
+</body>
+
+</html>

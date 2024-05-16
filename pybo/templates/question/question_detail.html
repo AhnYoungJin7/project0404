@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include "weather_part.html" %}
+
+{% if question %}
+<div class="container my-3">
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{question.subject}}</h5>
+         
+          <p>{{question.file_path}}</p>
+          <div>
+            <img width="30%" height="30%" src="{{question.file_path}}" alt="첨부된 파일">
+          </div>
+
+          <p class="card-text">{{question.content}}</p>
+          <div class="d-flex justify-content-end">
+            {{question.user.username}} |
+            {{question.create_date | datetime}}
+          </div>
+            <a href="{{url_for('main.index')}}" class="card-link">목록</a>
+            {% if g.user == question.user %}
+            <a href="{{url_for('question.update', question_id=question.id)}}" class="card-link">수정</a>
+            <a href="{{url_for('question.delete', question_id=question.id)}}" class="delete card-link">삭제</a>
+            {% endif %}
+        </div>
+      </div>
+
+      <h4 class="my-3 py-2">{{question.answer_set | length}} 개의 답글이 있음</h4>
+      <div id="replies">
+      {% for answer in question.answer_set %}
+      <div class="card my-3">
+        <div class="card-body">
+          <p class="card-text">{{answer.content}}</p>
+          <div class="d-flex justify-content-end">
+            {{answer.user.username}} |
+            {{answer.create_date | datetime}}
+          </div>
+          {% if g.user == answer.user %}
+          <a href="{{url_for('answer.update', answer_id=answer.id)}}" class="card-link">수정</a>
+          <a href="{{url_for('answer.delete', answer_id=answer.id)}}" class="delete card-link">삭제</a>
+          {% endif %}
+        </div>
+      </div>
+      
+      {% endfor %}
+      </div>
+</div>  
+
+<form method="post" action="{{url_for('answer.create', question_id=question.id)}}">
+   <!-- CSRF 토큰을 넣어 주세요. --> 
+   {{form.csrf_token}} 
+
+   <!-- 에러가 화면에 출력되게 하세요. -->
+   {% if form.errors %} 
+     <div>
+        {% for field, errors in form.errors.items() %}
+            <p>{{form[field].label}}</p>
+            {% for error in errors %}
+                <p>{{error}}</p>
+            {% endfor %}
+        {% endfor %}
+     </div>   
+   {% endif %}
+    <input type="hidden" name="user_id" value="{{g.user.id}}">
+ 
+    <textarea class="form-control" {% if not g.user %}disabled{% endif %} name="content" rows="10">
+      {% if not g.user %}답변 등록은 로그인 후 이용 가능합니다.{% endif %}</textarea>
+
+    <button class="my-3 btn btn-primary" >답글 등록</button>
+
+</form>
+
+{% else %}
+<p>데이터가 없습니다.</p>
+
+{% endif %}
+{% endblock %}
+
+<!-- javascript 시작 -->
+
+{% block script %}
+<script>
+$(document).ready(function(){
+  getWeather();
+  $(".delete").click(function(event){
+    event.preventDefault();
+    let areyousure = confirm("정말로 삭제할래요?");
+
+    if(areyousure){
+      location.href = $(this).attr("href")
+      // location.assign($(this).attr("href"))
+    }
+  });
+
+
+});
+</script>
+
+{% endblock %}

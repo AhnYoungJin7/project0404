@@ -1,0 +1,30 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      {% if question_list.has_prev %}
+      <li class="page-item"><a class="page-link" href="{{url_for('question.index', page = question_list.prev_num)}}">이전</a></li>
+      {% else %}
+
+      {% endif %}
+
+      {% for page in question_list.iter_pages() %}
+        {% if page %}
+        <li class="page-item {{ 'active' if page == question_list.page else ''}}">
+          <a class="page-link" href="{{url_for('question.index', page=page)}}">{{page}}</a></li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:void(0)">...</a></li>
+        {% endif %}
+      {% endfor %}
+
+
+<!--      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+
+      {% if question_list.has_next %}
+      <li class="page-item"><a class="page-link" href="{{url_for('question.index', page=question_list.next_num)}}">다음</a></li>
+      {% else %}
+      <li class="page-item"><a class="page-link" href="javascript:void(0)">다음</a></li>
+      {% endif %}
+
+    </ul>
+  </nav>
