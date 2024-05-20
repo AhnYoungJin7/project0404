@@ -16,6 +16,7 @@ def set_g():
 
 @bp.route("/")
 def index():
+    3/0
     page = request.args.get("page", type=int, default=1)
     question_list = Question.query.order_by(Question.create_date.desc())
     question_list = question_list.paginate(page=page, per_page=10)
