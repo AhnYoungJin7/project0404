@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, request, session, g
+from flask import Flask, Blueprint, render_template, request, session, g, current_app
 from pybo.models import Question
 from pybo.models import User
 
@@ -16,7 +16,7 @@ def set_g():
 
 @bp.route("/")
 def index():
-    3/0
+    current_app.logger.info("info 레벨로 출력")
     page = request.args.get("page", type=int, default=1)
     question_list = Question.query.order_by(Question.create_date.desc())
     question_list = question_list.paginate(page=page, per_page=10)
